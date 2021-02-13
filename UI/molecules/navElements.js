@@ -1,7 +1,7 @@
 import styles from '../../styles/Navbar.module.css';
 import Link from 'next/link';
 
-export const NavElements = () => {
+export default function NavElements(){
 
     const NavContainer = ({children}) => { 
         return (<div className={styles.container}>

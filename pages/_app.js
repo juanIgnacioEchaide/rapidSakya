@@ -1,5 +1,5 @@
 import '../styles/globals.css'
-import Layout from '../UI/organism/layout';
+import Layout from '../UI/organism/layout/layout';
 
 function MyApp({ Component, pageProps }) {
   return (<Layout>

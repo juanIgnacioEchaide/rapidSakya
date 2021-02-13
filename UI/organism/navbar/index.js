@@ -1,9 +1,8 @@
-import { NavContainer, NavLinks, NavLogo, NavUser, NavMenu, NavBurger } from './navElements';
-import useNavbar from '../../../utils/useNavbar';
+import NavElements from '../../molecules/navElements';
 import useNavabar from '../../../utils/useNavbar';
 
 const NavBar = ({size}) => {   
-
+    const { NavContainer, NavLinks, NavLogo, NavUser, NavMenu, NavBurger } = NavElements();
     const {isOpened, handleOpenMenu} = useNavabar();
 
         if(size==='DESKTOP'){
