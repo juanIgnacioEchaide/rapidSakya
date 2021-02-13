@@ -8,7 +8,12 @@ export default function NavElements(){
                     {children}
                 </div>); 
         };
-     
+    
+    const NavbarContainer = ({children}) => {
+    return (<div className={styles.navbar_container}>
+            {children}
+            </div>) 
+    };
     const NavLinks = ({links}) => { 
         return (<div className={styles.links_list}>
                   {links.map( l => <p className={styles.links_item}>{l.title}</p>)}
@@ -30,7 +35,7 @@ export default function NavElements(){
                 </div>); 
         };
 
-    const NavMenu = ({isOpen}) => {
+    const NavMenu = ({isOpen, links}) => {
         return (
             <div className={styles.drop_menu_list}>
                 {links.map( l => <p  className={styles.drop_menu_item}>{l.title}</p>)}
@@ -38,6 +43,6 @@ export default function NavElements(){
         )  
     }
 
-        return { NavContainer, NavLinks, NavLogo, NavUser, NavBurger}
+        return { NavContainer, NavbarContainer, NavLinks, NavLogo, NavUser, NavBurger, NavMenu}
 
 }
