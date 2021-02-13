@@ -13,12 +13,13 @@ const NavBar = (/* {size} */) => {
         console.log(isOpened)
     }
             return <NavContainer>
-                        <NavbarContainer>
+                        <NavbarContainer> 
+                            <NavUser/>
                             <NavLogo/>
                             {size==='DESKTOP_SIZE'
                             ? <NavLinks links={links} />
                             : null}                          
-                            <NavUser/>
+                         
 
                             {size ==='MOBILE_SIZE'
                             ?<NavBurger openFunc={handleOpenMenu}/>

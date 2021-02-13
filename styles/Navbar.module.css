@@ -2,13 +2,13 @@
     background-color: black;
     height: 10vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column; 
 }
 
 .navbar_container{
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 .links_list{
     display: flex;
@@ -23,7 +23,12 @@
 
 }
 .login_button{
-
+    background-image: url('../public/icons/user.png');
+    background-size: cover;
+    height:5vh;
+    width: 5vh;
+    margin: 1.5%;
+    border-radius: 50%;
 }
 .burger{
     background-image: url('../public/icons/burger.jpg');
@@ -36,8 +41,11 @@
 .drop_menu_list{
     height: 30vh;
     background-color: black;
+
 }
 
 .drop_menu_item{
     color:blanchedalmond;
+    margin: 1.5%;
+    margin-left: 10%;
 }
