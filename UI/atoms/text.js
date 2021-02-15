@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import styles from '../../styles/Texts.module.css';
 
-const Texts = () => {
+export default function Texts(){
 
     const PrimaryTitle = ({text}) => {
         return <h2 className={styles.primary_title}>{text}</h2>

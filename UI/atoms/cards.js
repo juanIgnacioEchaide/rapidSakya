@@ -1,6 +1,6 @@
 import styles from '../../styles/Cards.module.css';
 
-export const Cards = () => {
+export default  function Cards(){
      
     const FocusCard = ({children}) => {
         return <div className={styles.focus_card} >
