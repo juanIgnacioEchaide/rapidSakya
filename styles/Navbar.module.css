@@ -3,6 +3,7 @@
     height: 10vh;
     display: flex;
     flex-direction: column; 
+    min-width: 600px;
 }
 
 .navbar_container{
@@ -13,12 +14,14 @@
 .links_list{
     display: flex;
     flex-direction: row;
-
-}
-.links_item{
-    color:blanchedalmond;
+    color:blanchedalmond;   
+    justify-content: space-between;    
     padding: 2px;
 }
+.links_item{
+    margin: 20px;    
+}
+
 .logo{
 
 }
@@ -30,6 +33,11 @@
     margin: 1.5%;
     border-radius: 50%;
 }
+
+.login_button:hover{
+    opacity: 80%;
+}
+
 .burger{
     background-image: url('../public/icons/burger.jpg');
     background-size: cover;
@@ -39,13 +47,15 @@
 }
 
 .drop_menu_list{
-    height: 30vh;
+    height: auto;
     background-color: black;
-
-}
+    color:blanchedalmond;
+    display: flex;
+    flex-direction: column;    
+    padding: 15px;
+    }
 
 .drop_menu_item{
-    color:blanchedalmond;
-    margin: 1.5%;
-    margin-left: 10%;
+    margin: 15px;
+    margin-top: 40px;
 }

@@ -1,5 +1,6 @@
 import styles from '../../styles/Navbar.module.css';
 import Link from 'next/link';
+import { forwardRef } from 'react';
 
 export default function NavElements(){
 
@@ -14,9 +15,19 @@ export default function NavElements(){
             {children}
             </div>) 
     };
-    const NavLinks = ({links}) => { 
+
+    const NavLinkItem = forwardRef(({onClick, href, title}, ref) => {
+        return (
+            <a href={href} onClick={onClick} ref={ref}>
+                {title}
+            </a>
+        )});
+
+    const NavLinks = ({links,ref}) => { 
         return (<div className={styles.links_list}>
-                  {links.map( l => <p className={styles.links_item}>{l.title}</p>)}
+                  {links.map( l => <Link key={l.title} href={"/" + l.ref}>
+                                        <a className={styles.links_item}>{l.title}</a>
+                                    </Link>)}
                 </div>); 
         };
 
@@ -38,7 +49,9 @@ export default function NavElements(){
     const NavMenu = ({isOpen, links}) => {
         return (
             <div className={styles.drop_menu_list}>
-                {links.map( l => <p  className={styles.drop_menu_item}>{l.title}</p>)}
+                {links.map( l => <Link key={l.title} href={"/" + l.ref} className={styles.drop_menu_item}>
+                                        <a>{l.title}</a>
+                                </Link>)}
             </div>
         )  
     }
