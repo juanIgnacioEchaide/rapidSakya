@@ -6,6 +6,7 @@ import useMedia from '../../../utils/useMedia';
 
 const layout = ({children}) => {
     const size = useMedia();
+    
     const loginSelected = false;
     
     return (

@@ -2,30 +2,29 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import {MOBILE_SIZE, DESKTOP_SIZE} from '../utils/constants';
 
-export default function useMedia(props) {    
-    let size = null;
-    const setSizeType = () => {
+export default function useMedia() {    
+    
+    const [size, setSize] = useState('');
 
-        let sizeType = null; 
+    const matchSize = ()=>{
+        let portrait= window.matchMedia("(orientation: portrait)");
+        let mobileSize= window.matchMedia("(max-width: 676px)");
+        let desktopSize= window.matchMedia("(min-width: 677px)");
 
-        if(window.innerWidth >= 676){
-            
-           sizeType = DESKTOP_SIZE;
+        if(mobileSize.matches){
+            setSize(MOBILE_SIZE);
         }
-        else{
-            sizeType = MOBILE_SIZE;
+        if(desktopSize.matches){
+            setSize(DESKTOP_SIZE);
         }
-        return sizeType;
-    } 
+    }
 
-    useEffect( 
-        ()=>{
-            window.addEventListener('resize',setSizeType);
-            size = setSizeType();
-        ()=> 
-            window.removeEventListener('resize',setSizeType)
-            }
-        ,[]);
+    useEffect(() => {
+        matchSize();
+        window.onresize = function checkMedia(){
+            matchSize();
+        }    
+        }, []);
 
     return size;
 }
