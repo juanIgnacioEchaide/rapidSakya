@@ -7,6 +7,11 @@ import {MOBILE_SIZE, DESKTOP_SIZE} from '../../../utils/constants';
 const NavBar = ({size}) => {   
 
     const { NavContainer, NavbarContainer, NavLinks, NavLogo, NavUser, NavMenu, NavBurger } = NavElements();
+    useEffect(() => {
+        DESKTOP_SIZE 
+        ? setIsOpened(false)
+        : isOpened;
+    }, [size]);
 
     const links =[
                 {title: "Tu pedido",ref:"pedido"},
@@ -24,7 +29,6 @@ const NavBar = ({size}) => {
         MOBILE_SIZE 
         ? setIsOpened(!isOpened)
         : setIsOpened(false);
-   
         console.log(isOpened)
     }
             return <NavContainer>
