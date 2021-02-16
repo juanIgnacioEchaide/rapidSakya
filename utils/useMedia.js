@@ -21,7 +21,7 @@ export default function useMedia() {
 
     useEffect(() => {
         matchSize();
-        window.onresize = function checkMedia(){
+        window.onresize = () =>  {
             matchSize();
         }    
         }, []);
