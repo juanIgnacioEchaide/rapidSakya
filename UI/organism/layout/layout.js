@@ -6,9 +6,8 @@ import LoginModal from '../../organism/loginModal/index';
 
 const layout = ({children, size}) => {
  
-
     const loginSelected = false;
-    
+
     return (
         <div>
             <NavBar size={size} />
