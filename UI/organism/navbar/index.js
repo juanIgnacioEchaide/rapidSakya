@@ -7,11 +7,10 @@ import {MOBILE_SIZE, DESKTOP_SIZE} from '../../../utils/constants';
 const NavBar = ({size}) => {   
 
     const { NavContainer, NavbarContainer, NavLinks, NavLogo, NavUser, NavMenu, NavBurger } = NavElements();
+    const { isOpened, handleOpenMenu, closeMenuResponsive } = useNavabar();
 
     useEffect(() => {
-        DESKTOP_SIZE 
-        ? setIsOpened(false)
-        : isOpened;
+        closeMenuResponsive();
     }, [size]);
 
     const links =[
@@ -19,18 +18,11 @@ const NavBar = ({size}) => {
                 {title: "Nuestros productos",ref:"productos"},
                 {title: "¿Quiénes somos?",ref:"nosotros"},
                 ]
-                
-    const [isOpened, setIsOpened]=useState(false);
 
     const handleLogin = () => {
         return console.log('login');
     }
 
-    const handleOpenMenu=()=>{ 
-        MOBILE_SIZE 
-        ? setIsOpened(!isOpened)
-        : setIsOpened(false);
-    }
             return <NavContainer>
                         <NavbarContainer> 
                             <NavUser loginFunc={handleLogin}/>
