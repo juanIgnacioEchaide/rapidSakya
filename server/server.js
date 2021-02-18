@@ -1,10 +1,14 @@
 const express = require('express');
-const { graphqlHTTP } = require('express-graphql');
 
 const app = express();
-app.listen(4000, () => console.log('listening'));
+
+const {graphqlHTTP}  = require('express-graphql');
+
+
+app.listen(4000, () => console.log('listening on http://localhost:4000'));
+
 app.use('/graphql', graphqlHTTP({
-    schema: schema,
+/*     schema: schema,
     rootValue: root,
-    graphiql: true,
+    graphiql: true, */
   }));
