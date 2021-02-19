@@ -1,14 +1,37 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLFloat} = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLFloat, GraphQLID} = graphql;
  
 //dummy data
 var promos=[
-    {id:0, name:"fastidharma", description: "es rico, sano, y blablab", price: 250.00},
-    {id:1, name:"shangri-light", description: "es rico, sano, y blablab", price: 250.00},
-    {id:2, name:"Yi-Huang-Da-Best", description: "es rico, sano, y blablab", price: 250.00},
+    {
+        id:0, 
+        name:"friday kuai-le", 
+        description: "es rico, sano, y blablab", 
+        menues: [ { menuId:0 , cantidad: 3 }, { menuId:1 , cantidad: 3}], 
+        price: 1375.00
+    },
+    {
+        id:1, 
+        name:"hen-hao previa", 
+        description: "es rico, sano, y blablab", 
+        menues: [ { menuId:2, cantidad: 3 }, { menuId:1 , cantidad: 3 } ] ,  
+        price: 1375.00
+    },
+    {
+        id:2, 
+        name:"wukong knows", 
+        description: "es rico, sano, y blablab",
+        menues: [ { menuId:2, cantidad: 3 }, { menuId:0 , cantidad: 3}] ,  
+        price: 1375.00
+    },
 ]
+var menues=[
+    { id:0, menuId: 0, name:"fastidharma", description: "es rico, sano, y blablab", price: 275.00 },
+    { id:1, menuId: 1, name:"shangri-light", description: "es rico, sano, y blablab", price: 275.00 },
+    { id:2, menuId: 2, name:"Yi-Huang-Da-Best", description: "es rico, sano, y blablab", price: 275.00 },
+]
+//
 
 const PromoType = new GraphQLObjectType({
     name: 'Promo',
@@ -16,21 +39,43 @@ const PromoType = new GraphQLObjectType({
         id: { type: GraphQLInt },
         name: { type: GraphQLString }, 
         description: { type: GraphQLString }, 
+        menues: { type: MenuType,
+                resolve(parent, args){
+                    return _.find(menues, {id: parent.menuId})
+            }
+        },
         price: { type: GraphQLFloat }, 
     })
 });
 
+const MenuType = new GraphQLObjectType({
+    name:'Menu',
+    fields: () => ({
+        id: { type: GraphQLInt },
+        name: { type: GraphQLString },
+        price: { type: GraphQLFloat }
+    })
+})
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields:{
-           promo:{
+            menu:{
+            type: MenuType,
+            args:{
+                id: { type : GraphQLInt }
+            },
+            resolve(parent,args){
+                return _.find(menues, { id: args.id })
+            }
+        },
+            promo:{
             type: PromoType,
             args:{ 
                 id: { type: GraphQLInt }
             },
             resolve(parent,args){
-                //codigo para obtener data de la db u otra fuente 
-               return _.find(promos,{id:args.id}) 
+               return _.find(promos, { id:args.id }) 
             }
         } 
     }
