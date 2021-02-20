@@ -2,14 +2,10 @@ const express = require('express');
 const schema = require('./schema/schema');
 const app = express();
 const { graphqlHTTP, graphiql }  = require('express-graphql');
-const mongoose = require('mongoose');
+ const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect('mongodb+srv://devuser:1111@cluster0.duiue.mongodb.net/haozi', {useNewUrlParser: true, useUnifiedTopology: true})
 .catch( error => handleError(error));
-
-mongoose.connection.on('error', err => {
-  logError(err);
-});
 
 mongoose.connection.once('open', function() {
   console.log('mongoose ok')

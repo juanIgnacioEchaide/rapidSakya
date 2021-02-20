@@ -56,6 +56,7 @@ const MenuType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLInt },
         name: { type: GraphQLString },
+        description: { type: GraphQLString },
         price: { type: GraphQLFloat }
     })
 })
@@ -69,6 +70,29 @@ const UserType = new GraphQLObjectType({
     })
 })
 
+const Mutation = new GraphQLObjectType({
+    name:'Mutation',
+    fields: {
+        addMenu:{
+            type: MenuType,
+            args:{
+                id: { type: GraphQLID},
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                price: { type: GraphQLFloat }
+            }, 
+            resolve(parent, args){
+                let menu = new Menu({
+                    id: args.id,
+                    name: args.name,
+                    description: args.description,
+                    price: args.price
+                });
+                return menu.save();
+            }
+        }
+    }
+})
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields:{
@@ -113,5 +137,6 @@ const RootQuery = new GraphQLObjectType({
 })
 
 module.exports = new graphql.GraphQLSchema({
+    mutation: Mutation,
     query:RootQuery
 })

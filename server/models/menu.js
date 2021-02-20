@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const menuSchema = new Schema({
     id: Number,
     name: String, 
-    menuId: Number,
     description: String, 
     price: Number, 
 })
