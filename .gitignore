@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+#secured constants
+secured_constants.js
