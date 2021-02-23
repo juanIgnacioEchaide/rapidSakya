@@ -1,40 +1,17 @@
 const graphql = require('graphql');
 const _ = require('lodash');
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLFloat, GraphQLID, GraphQLList} = graphql;
 const Menu = require('../models/menu');
 const Promo = require('../models/promo');
 
-//dummy data
-/* var promos = [
-    {
-        id:0, 
-        name:"friday kuai-le", 
-        description: "es rico, sano, y blablab", 
-        menues: [{menuId:0, cantidad:3},{menuId:1, cantidad:3}], 
-        price: 1375.00
-    },
-    {
-        id:1, 
-        name:"hen-hao previa", 
-        description: "es rico, sano, y blablab", 
-        menues: [{menuId:0} ,{menuId:1}],   
-        price: 1375.00
-    },
-    {
-        id:2, 
-        name:"wukong specialty  ", 
-        description: "es rico, sano, y blablab",
-        menues: [{menuId:0, cantidad:3},{menuId:1, cantidad:3}], 
-        price: 1375.00
-    },
-]
-
-var menues = [
-    { id:0, menuId:0, name:"fastidharma", description: "es rico, sano, y blablab", price: 275.00 },
-    { id:1, menuId:1, name:"shangri-light", description: "es rico, sano, y blablab", price: 275.00 },
-    { id:2, menuId:2, name:"Yi-Huang-Da-Best", description: "es rico, sano, y blablab", price: 275.00 },
-] */
-//
+const { 
+    GraphQLObjectType, 
+    GraphQLString, 
+    GraphQLInt, 
+    GraphQLFloat, 
+    GraphQLID, 
+    GraphQLList, 
+    GraphQLNonNull
+} = graphql;
 
 const PromoType = new GraphQLObjectType({
     name: 'Promo',
@@ -44,7 +21,7 @@ const PromoType = new GraphQLObjectType({
         description: { type: GraphQLString }, 
         menues: { type: new GraphQLList(MenuType),
                 resolve(parent, args){ 
-                   /*  return menues */
+                   return Menu.findById(parent.id)
             }
         },
         price: { type: GraphQLFloat }, 
@@ -55,9 +32,9 @@ const MenuType = new GraphQLObjectType({
     name:'Menu',
     fields: () => ({
         id: { type: GraphQLInt },
-        name: { type: GraphQLString },
+        name: { type: GraphQLNonNull(GraphQLString) },
         description: { type: GraphQLString },
-        price: { type: GraphQLFloat }
+        price: { type: GraphQLNonNull(GraphQLFloat) }
     })
 })
 
@@ -65,8 +42,8 @@ const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
         id: { type: GraphQLInt },
-        username: { type: GraphQLString },
-        password: { type: GraphQLString },
+        username: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) },
     })
 })
 
@@ -93,13 +70,14 @@ const Mutation = new GraphQLObjectType({
         }
     }
 })
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields:{
         promos:{
             type: GraphQLList(PromoType),
             resolve(parent,args){
-       /*          return promos; */
+                Promo.find({});
                 }
         }, 
         menu:{
@@ -108,13 +86,13 @@ const RootQuery = new GraphQLObjectType({
                 id: { type : GraphQLInt }
             },
             resolve(parent,args){
-              /*   return _.find(menues, { id: args.id }) */
+                Menu.findById(args.id)
             }
         },
         menues:{
             type: GraphQLList(MenuType),
             resolve(parent,args){
-     /*            return menues; */
+                Menu.find({});
             }
         },
         promo:{
@@ -123,7 +101,7 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLInt }
                 },
             resolve(parent,args){
-               return _.find(promos, { id:args.id }) 
+                Promo.findById(args.id)
                 }
             },
         user:{
@@ -131,6 +109,9 @@ const RootQuery = new GraphQLObjectType({
             args:{
                 username: { type: GraphQLString },
                 password: { type: GraphQLString },
+                },
+            resolve(parent,args){
+                User.find({username: args.username,password:args.password});
                 }
             }
         }
