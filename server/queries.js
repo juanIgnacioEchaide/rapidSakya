@@ -1,44 +1,24 @@
-import { gql } from 'apollo-boost';
-import { compose, graphql } from 'react-apollo';
+import { gql } from '@apollo/client';
 
-export const getMenusQuery = gql`
-{
-    menus{
-        id
-        name
-        price
-        description
-    }
-}
-`
-export const getMenuByIdQuery= (id) = gql`
-{
-    menu(id:${id}) {
-        id
-        name
-        price
-        description
-    }
-}
-`
-export const getPromosQuery = gql`
-{
+export const PROMOS = gql`
+  query GetPromos {
     promos{
-        id
-        name
-        price
-        description
+      id
+      name
+      price
+      description
     }
-}`
-
-export const getPromoByIdQuery = (id) = gql`
-{
-    promo(id:${id}) {
-        id
-        name
-        menues
-        price
-        description
-    }
-}
+  }
 `
+
+export const MENUS = gql`
+  query GetMenus {
+    menus{
+      id
+      name
+      price
+      description
+    }
+  }
+`
+
