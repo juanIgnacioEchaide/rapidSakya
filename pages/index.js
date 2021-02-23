@@ -4,14 +4,14 @@ import styles from '../styles/Home.module.css'
 import Promos from '../UI/organism/promos/index'
 import Link from 'next/link'
 import useQuery from '../utils/useQuery';
+import { GET_PROMOS } from '../utils/constants';
 
-function getServerSivedProps(){
-  const { data }= useQuery('getPromos');
-  if(data.loading){
-    return (<div> loading...</div>)}
-    else {
-      return data;
-  }
+export async function getServerSideProps(context){
+  
+  const { data }= useQuery( GET_PROMOS );
+  return { props: { 
+                    promos: data 
+                  }}
 } 
 
 export default function Home() {
@@ -21,9 +21,11 @@ export default function Home() {
       <Head>
         <title>Rapid Sakya</title>
       </Head>
+
       <main>
-        <Promos promos={data} />
+        <Promos promos={props.promos} />
       </main>
+
       <footer className={styles.footer}>
 
       </footer>
