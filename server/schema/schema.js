@@ -32,9 +32,9 @@ const MenuType = new GraphQLObjectType({
     name:'Menu',
     fields: () => ({
         id: { type: GraphQLInt },
-        name: { type: GraphQLNonNull(GraphQLString) },
+        name: { type: GraphQLString },
         description: { type: GraphQLString },
-        price: { type: GraphQLNonNull(GraphQLFloat) }
+        price: { type: GraphQLString }
     })
 })
 
@@ -42,8 +42,8 @@ const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
         id: { type: GraphQLInt },
-        username: { type: GraphQLNonNull(GraphQLString) },
-        password: { type: GraphQLNonNull(GraphQLString) },
+        username: { type: GraphQLString },
+        password: { type: GraphQLString },
     })
 })
 
@@ -77,7 +77,7 @@ const RootQuery = new GraphQLObjectType({
         promos:{
             type: GraphQLList(PromoType),
             resolve(parent,args){
-                Promo.find({});
+               return Promo.find({});
                 }
         }, 
         menu:{
@@ -86,13 +86,13 @@ const RootQuery = new GraphQLObjectType({
                 id: { type : GraphQLInt }
             },
             resolve(parent,args){
-                Menu.findById(args.id)
+                return Menu.findById(args.id)
             }
         },
         menues:{
             type: GraphQLList(MenuType),
             resolve(parent,args){
-                Menu.find({});
+                return Menu.find({});
             }
         },
         promo:{
@@ -101,7 +101,7 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLInt }
                 },
             resolve(parent,args){
-                Promo.findById(args.id)
+                return Promo.findById(args.id)
                 }
             },
         user:{
@@ -111,7 +111,7 @@ const RootQuery = new GraphQLObjectType({
                 password: { type: GraphQLString },
                 },
             resolve(parent,args){
-                User.find({username: args.username,password:args.password});
+                return User.find({username: args.username,password:args.password});
                 }
             }
         }

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const PROMOS = gql`
-  query GetPromos {
+  {
     promos{
       id
       name
@@ -12,7 +12,7 @@ export const PROMOS = gql`
 `
 
 export const MENUS = gql`
-  query GetMenus {
+{
     menus{
       id
       name
@@ -21,4 +21,3 @@ export const MENUS = gql`
     }
   }
 `
-

@@ -3,13 +3,28 @@ import Layout from '../UI/organism/layout/layout';
 import useMedia from '../utils/useMedia';
 import { pass, user} from '../utils/secured_constants';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-
+import { gql } from '@apollo/client';
 function MyApp({ Component, pageProps }) {
 
   const client = new ApolloClient({
-    uri: 'mongodb+srv://'+user+':'+pass+'@cluster0.duiue.mongodb.net/haozi',
+    uri: 'http://localhost:5000/graphql',
     cache: new InMemoryCache()
   });
+
+ client
+    .query({
+      query: gql`
+      query getPromos{
+        menues{
+          id
+          price
+          description
+          name
+        }
+      }
+      `
+    })
+    .then(result => console.log(result));
 
   const size = useMedia();
     
