@@ -11,21 +11,6 @@ function MyApp({ Component, pageProps }) {
     cache: new InMemoryCache()
   });
 
- client
-    .query({
-      query: gql`
-      query getPromos{
-        menues{
-          id
-          price
-          description
-          name
-        }
-      }
-      `
-    })
-    .then(result => console.log(result));
-
   const size = useMedia();
     
   return (
