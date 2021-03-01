@@ -8,19 +8,19 @@ export default  function Cards(){
                 </div>
     };
 
-    const LightCard = ({title, text}) => {
+    const LightCard = ({children}) => {
         return <div className={styles.light_card}>
                     {children}
                 </div>
     };
 
-    const WarningCard = ({title, text}) => {
+    const WarningCard = ({children}) => {
         return <div className={styles.warning_card}>
                     {children}
                 </div>
     };
 
-    const SuccessCard = ({title, text}) => {
+    const SuccessCard = ({children}) => {
         return <div className={styles.success_card}>
                     {children}
                 </div>

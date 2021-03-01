@@ -18,7 +18,7 @@ return(<LightCard>
             <PrimaryTitle text={name}/>
             <SecondaryTitle text={price}/>
             <InfoParagraph text={description}/>
-            <PrimaryLink text={link}/>
+{/*             <PrimaryLink text={link}/> */}
         </LightCard>)
 }
 
