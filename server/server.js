@@ -7,11 +7,12 @@ const { graphqlHTTP, graphiql }  = require('express-graphql');
 const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://'+user+':'+pass+'@cluster0.duiue.mongodb.net/haozi', {useNewUrlParser: true, useUnifiedTopology: true})
-.catch( error => handleError(error));
+.catch( error => new Error('the following error happened', error));
 
 mongoose.connection.once('open', function() {
   console.log('mongoose ok')
 });
+
 
 app.use(cors());
 

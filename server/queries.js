@@ -23,7 +23,7 @@ export const PROMOS = gql`
   `
 
  export const SINGLE_MENU = gql`
-  query getMenuById($id: Int!) {
+  query getMenuById($id: int) {
     menu(id: $id) {
       id
       price
