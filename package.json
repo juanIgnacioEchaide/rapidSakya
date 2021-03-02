@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "serv" : "node --trace-warnings server/server.js",
+    "serv": "node --trace-warnings server/server.js",
     "build": "next build",
     "start": "concurrently \"next dev\" \"node --trace-warnings server/server.js\""
   },

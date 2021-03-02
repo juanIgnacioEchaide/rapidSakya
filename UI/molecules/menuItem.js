@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Texts from '../atoms/text';
 import Cards from '../atoms/cards';
 
-const MenuItem = ({name, price, description, img, link})=>{
+const MenuItem = ({name, price, description, clickFunc, img, link})=>{
   
   const { LightCard } = Cards();
 
@@ -14,7 +14,7 @@ const MenuItem = ({name, price, description, img, link})=>{
             SmallLink
         } = Texts();
 
-return(<LightCard>    
+return(<LightCard onClick={clickFunc}>    
             <PrimaryTitle text={name}/>
             <SecondaryTitle text={price}/>
             <InfoParagraph text={description}/>

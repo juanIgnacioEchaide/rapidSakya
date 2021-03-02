@@ -12,7 +12,6 @@ const MenusDisplay = () =>{
       return <p>Error :{error}</p>;
       
     return (<div>
-
-    
+ 
     </div>)
 }

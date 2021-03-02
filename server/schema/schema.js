@@ -21,7 +21,7 @@ const PromoType = new GraphQLObjectType({
         description: { type: GraphQLString }, 
         menues: { type: new GraphQLList(MenuType),
                 resolve(parent, args){ 
-                   return Menu.findById(parent.id)
+                   return Menu.findOne(parent.id)
             }
         },
         price: { type: GraphQLFloat }, 
@@ -77,7 +77,7 @@ const RootQuery = new GraphQLObjectType({
         promos:{
             type: GraphQLList(PromoType),
             resolve(parent,args){
-               return Promo.find({});
+               return Promo.find({id:args.id});
                 }
         }, 
         menu:{
@@ -86,7 +86,7 @@ const RootQuery = new GraphQLObjectType({
                 id: { type : GraphQLInt }
             },
             resolve(parent,args){
-                return Menu.findById(args.id)
+                return Menu.findOne({id:args.id})
             }
         },
         menues:{
@@ -101,7 +101,7 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLInt }
                 },
             resolve(parent,args){
-                return Promo.findById(args.id)
+                return Promo.findOne({id:args.id})
                 }
             },
         user:{

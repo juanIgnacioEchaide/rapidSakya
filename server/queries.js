@@ -9,7 +9,7 @@ export const PROMOS = gql`
       name
     }
   }
-  `
+  `;
 
  export const MENUS = gql`
   query getMenus{
@@ -20,7 +20,7 @@ export const PROMOS = gql`
       name
     }
   }
-  `
+  `;
 
  export const SINGLE_MENU = gql`
   query getMenuById($id: int) {
