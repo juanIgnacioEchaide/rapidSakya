@@ -8,8 +8,8 @@ export default function useMedia() {
 
     const matchSize = ()=>{
         let portrait= window.matchMedia("(orientation: portrait)");
-        let mobileSize= window.matchMedia("(max-width: 676px)");
-        let desktopSize= window.matchMedia("(min-width: 677px)");
+        let mobileSize= window.matchMedia("(max-width: 767px)");
+        let desktopSize= window.matchMedia("(min-width: 768px)");
 
         if(mobileSize.matches){
             setSize(MOBILE_SIZE);

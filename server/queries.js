@@ -23,7 +23,7 @@ export const PROMOS = gql`
   `;
 
  export const SINGLE_MENU = gql`
-  query getMenuById($id: int) {
+  query getMenuById($id: Int) {
     menu(id: $id) {
       id
       price
@@ -32,3 +32,8 @@ export const PROMOS = gql`
     }
   }
 `;
+
+export const ADD_ORDER = gql`
+mutation AddOrder( $productus: [ productInput ], $price: float) {
+  _id
+}`;
