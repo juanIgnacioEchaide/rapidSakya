@@ -124,14 +124,14 @@ const Mutation = new GraphQLObjectType({
             args:{
                 id: { type: GraphQLInt},
                 name: { type: GraphQLString },
-                description: { type: GraphQLString },
+                products: { type: GraphQLList(ProductInputType) },
                 price: { type: GraphQLFloat }
             }, 
             resolve(parent, args){
                 let menu = new Menu({
                     id: args.id,
                     name: args.name,
-                    description: args.description,
+                    products: args.products,
                     price: args.price
                 });
                 return menu.save();
