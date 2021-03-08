@@ -32,5 +32,5 @@ const Purchase = () =>{
             LISTO
         </button>
 
-    </FocusCard>)
+    </FocusCard>)}
 export default Purchase;

@@ -85,22 +85,6 @@ const ProductInputType = new GraphQLInputObjectType({
     })
 });
 
-input CreateCompanyInput {
-    name: String!
-    type: CompanyEnum!
- }
- 
- input CreateUserInput { 
-   username: String!
-   firstname: String!
-   lastname: String!
-   company: CreateCompanyInput!
- }
- 
- type Mutation {
-   createUser(input: CreateUserInput!): User
- }
-
 const OrderType = new GraphQLObjectType({
     name: 'Order',
     fields: () => ({
