@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore } from 'redux';
-import { rootReducer, initialState, applyMiddleware } from '../store/rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { rootReducer,  } from '../store/rootReducer';
 import rootSaga from '../store/rootSaga';
 import initialState from '../store/initialState';
 import createSagaMiddleware from 'redux-saga';

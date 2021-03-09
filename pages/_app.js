@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import { gql } from '@apollo/client';
-import { Provider as ReduxProvider } from 'react-redux'; 
+import { Provider } from 'redux'; 
 
 import Layout from '../UI/organism/layout/layout';
 import useMedia from '../utils/useMedia';

@@ -13,7 +13,6 @@ mongoose.connection.once('open', function() {
   console.log('mongoose ok')
 });
 
-
 app.use(cors());
 
 app.listen(5000, () => console.log('listening on http://localhost:5000/graphql'));
