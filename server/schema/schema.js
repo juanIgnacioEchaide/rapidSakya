@@ -1,6 +1,8 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 const Product = require('../models/product');
+const Menu = require('../models/menu');
+const { ObjectId } = require('bson');
 
 
 const { 
@@ -16,7 +18,7 @@ const {
 const ProductType = new GraphQLObjectType({
     name: 'Product',
     fields: () => ({
-        id: { type: GraphQLInt },
+        _id: { type: ObjectId },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         expiringDate: { type: GraphQLString }
@@ -33,13 +35,13 @@ const ProductInputType = new GraphQLInputObjectType({
     })
 });
 
-const MenuType = new GraphQLInputObjectType({
+const MenuType = new GraphQLObjectType({
     name: 'Menu',
     fields: () => ({
         id: { type: GraphQLInt },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
-        products: {type: GraphQLList(ProductInputType)}
+        products: {type: GraphQLList(ProductType)}
     })
 });
 
@@ -70,14 +72,23 @@ const Mutation = new GraphQLObjectType({
                 id: { type: GraphQLInt },
                 description: { type: GraphQLString },
                 price: { type: GraphQLFloat }, 
-                menues: {type: GraphQLList(ProductType) }
+                products: {type: GraphQLList(ProductInputType) }
             },
             resolve(parent, args){
-                let product = new Menu({
+                let menu = new Menu({
                     id: args.id,
                     description: args.description,
                     price: args.price,
-                    products: args.products
+                    products: args.products.map( p => {
+                                        let prodToSave = new Product({
+                                            id: args.products.id, 
+                                            description: args.products.description,
+                                            price: args.products.price,
+                                            expiringDate:args.products.expiringDate
+                                            });
+                                            prodToSave.save();
+                                        }
+                    )
                 });
                 return menu.save();
             }

@@ -1,8 +1,9 @@
+const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const productSchema = new Schema({
-    id: Number,
+    id: ObjectId,
     description: String, 
     price: Number, 
     expiringDate: Date,

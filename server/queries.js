@@ -22,6 +22,35 @@ export const PROMOS = gql`
   }
   `;
 
+
+  export const ADD_MENU =  gql`
+  mutation {
+    addMenu(
+        id: 20,
+        description: "cool menu",
+        price: 200.00,
+        products: [ 
+        { 
+            id: 0,
+            description: "hamburger",
+            price: 150.00,
+            expiringDate: "2021-03-30" },
+        { 
+            id: 1,
+            description: "chips",
+            price: 50.00,
+            expiringDate:" 2021-03-11" 
+        }]
+     ){
+       id
+       description 
+       price
+       products{
+        id
+      }
+     }
+    }`
+
  export const SINGLE_MENU = gql`
   query getMenuById($id: Int) {
     menu(id: $id) {
