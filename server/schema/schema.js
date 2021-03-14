@@ -18,7 +18,7 @@ const {
 const ProductType = new GraphQLObjectType({
     name: 'Product',
     fields: () => ({
-        _id: { type: ObjectId },
+        id: { type: GraphQLInt },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         expiringDate: { type: GraphQLString }
@@ -39,6 +39,7 @@ const MenuType = new GraphQLObjectType({
     name: 'Menu',
     fields: () => ({
         id: { type: GraphQLInt },
+        name: { type: GraphQLString },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         products: {type: GraphQLList(ProductType)}
@@ -70,6 +71,7 @@ const Mutation = new GraphQLObjectType({
             type: MenuType,
             args: {
                 id: { type: GraphQLInt },
+                name: { type: GraphQLString },
                 description: { type: GraphQLString },
                 price: { type: GraphQLFloat }, 
                 products: {type: GraphQLList(ProductInputType) }
@@ -78,19 +80,29 @@ const Mutation = new GraphQLObjectType({
                 let menu = new Menu({
                     id: args.id,
                     description: args.description,
-                    price: args.price,
-                    products: args.products.map( p => {
-                                        let prodToSave = new Product({
-                                            id: args.products.id, 
-                                            description: args.products.description,
-                                            price: args.products.price,
-                                            expiringDate:args.products.expiringDate
-                                            });
-                                            prodToSave.save();
-                                        }
-                    )
+                    name: args.description,
+                    price: args.price
                 });
                 return menu.save();
+            }
+        },
+        addProductToMenu:{
+            type: MenuType,
+            args: {
+                menuId: { type: GraphQLInt},
+                productId: { type: GraphQLInt},
+                description: { type: GraphQLString },
+                price: { type: GraphQLFloat },
+                expiringDate: { type: GraphQLString }
+            },
+            resolve(parent, args){
+                return Menu.addProduct(
+                    args.menuId, 
+                    args.productId, 
+                    args.description, 
+                    args.price, 
+                    args.expiringDate
+                    );
             }
         }
     }
