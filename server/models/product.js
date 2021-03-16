@@ -1,12 +1,18 @@
-const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const productSchema = new Schema({
-    id: ObjectId,
-    description: String, 
-    price: Number, 
-    expiringDate: Date,
+const ProductSchema = new Schema({
+    description: { type: String },
 })
 
-module.exports = mongoose.model('Product', productSchema);
+ProductSchema.statics.addProduct = function(id, args){
+    const Product = mongoose.model('product');
+    let product = new Product({
+                    description: args.description
+                });
+
+    return product.save();
+}
+
+
+mongoose.model('product', ProductSchema);
