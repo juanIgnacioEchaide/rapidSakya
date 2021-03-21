@@ -2,7 +2,9 @@ const graphql = require('graphql');
 const _ = require('lodash');
 const Menu = require('../models/menu');
 const Promo = require('../models/promo');
-const Product = require('../models/product');
+const Product = require('../models/product'); 
+const Ticket = require('../models/ticket'); 
+const { Timestamp } = require('bson');
 
 const { 
     GraphQLObjectType, 
@@ -78,12 +80,22 @@ const ProductType = new GraphQLObjectType({
 const ProductInputType = new GraphQLInputObjectType({
     name: 'ProductInput',
     fields: () => ({
-        id: { type: GraphQLInt },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         expiringDate: { type: GraphQLString }
     })
 });
+
+const TicketType = new GraphQLObjectType({
+    name: 'Ticket',
+    fields: ()=>({
+        id: { type: GraphQLInt},
+        author: { type: GraphQLString },
+        date: { type: GraphQLString },
+        type: { type: GraphQLString },
+        data: { type: GraphQLList(ProductType) }
+    })
+})
 
 const OrderType = new GraphQLObjectType({
     name: 'Order',
@@ -119,6 +131,26 @@ const Mutation = new GraphQLObjectType({
                 return product.save();
             }
         },
+        addTicket:{
+           type:  TicketType,
+           args: {
+                id: { type: GraphQLInt},
+                author: { type: GraphQLString },
+                date: { type: GraphQLString },
+                type: { type: GraphQLString },
+                data: { type: GraphQLList(ProductInputType) }
+           },
+           resolve(parent, args){
+               let ticket = new Ticket({
+                id: args.id,
+                author: args.author,
+                type: args.type,
+                date: args.date,
+                data: args.data
+               });
+               return ticket.save();
+           }
+        },
         addMenu:{
             type: MenuType,
             args:{
@@ -135,43 +167,6 @@ const Mutation = new GraphQLObjectType({
                     price: args.price
                 });
                 return menu.save();
-            }
-        },
-        addPromo:{
-            type: PromoType,
-            args:{
-                id: { type: GraphQLInt},
-                name: { type: GraphQLString },
-                menues: { type: GraphQLList(MenuInputType)},
-                description: { type: GraphQLString },
-                price: { type: GraphQLFloat }
-            }, 
-            resolve(parent, args){
-                let menu = new Promo({
-                    id: args.id,
-                    name: args.name,
-                    description: args.description,
-                    menues: args.menues,
-                    price: args.price
-                });
-                return promo.save();
-            }
-        },
-        addOrder:{
-            type: OrderType,
-            args:{
-                id: { type: GraphQLInt},
-                products: { type: [ProductInputType]},
-                price: { type: GraphQLFloat }
-            }, 
-            resolve(parent, args){
-                let order = new Order({
-                    id: args.id,
-                    name: args.name,
-                    description: args.description,
-                    price: args.price
-                });
-                return order.save();
             }
         }
     }
@@ -195,46 +190,11 @@ const RootQuery = new GraphQLObjectType({
                return Product.find({});
                 }
         },
-        promo:{
-            type: PromoType,
-            args:{ 
-                id: { type: GraphQLInt }
-                },
+        tickets:{
+            type: TicketType,
             resolve(parent,args){
-                return Promo.findOne({id: args.id})
-                }
-        },
-        promos:{
-            type: GraphQLList(PromoType),
-            resolve(parent,args){
-               return Promo.find({id:args.id});
-                }
-        }, 
-        menu:{
-            type: MenuType,
-            args:{
-                id: { type : GraphQLInt }
-            },
-            resolve(parent,args){
-                return Menu.findOne({id: args.id})
+                return Ticket.find({});
             }
-        },
-        menues:{
-            type: GraphQLList(MenuType),
-            resolve(parent,args){
-                return Menu.find({});
-            }
-        },
-       
-        user:{
-            type: UserType,
-            args:{
-                username: { type: GraphQLString },
-                password: { type: GraphQLString },
-                },
-            resolve(parent,args){
-                return User.find({username: args.username,password:args.password});
-                }
         }
     }
 })
