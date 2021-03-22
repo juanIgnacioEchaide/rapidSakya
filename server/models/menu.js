@@ -6,15 +6,8 @@ const menuSchema = new Schema({
     id: Number,
     name: String, 
     description: String, 
+    products: [{ type: Schema.Types.ObjectId, ref: 'product' }] ,
     price: Number, 
 })
-
-menuSchema.statics.addProductsToMenu = (menuId, productId) => {
-    let targetMenu = this.findById(menuId);
-    let product = Product.findById(productId);
-    targetMenu.products.push(product);
-    return Promise.all([ product.save(), menu.save()])
-            .then(([product, menu]) => menu);
-}
 
 module.exports = mongoose.model('Menu', menuSchema);

@@ -1,40 +1,24 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 const Menu = require('../models/menu');
-const Promo = require('../models/promo');
 const Product = require('../models/product'); 
 const Ticket = require('../models/ticket'); 
-const { Timestamp } = require('bson');
 
 const { 
     GraphQLObjectType, 
     GraphQLString, 
     GraphQLFloat, 
-    GraphQLInt, 
+    GraphQLID, 
     GraphQLInputObjectType,
     GraphQLList, 
     GraphQLNonNull
 } = graphql;
 
-const PromoType = new GraphQLObjectType({
-    name: 'Promo',
-    fields:() => ({
-        id: { type: GraphQLInt },
-        name: { type: GraphQLString }, 
-        description: { type: GraphQLString }, 
-        menues: { type: new GraphQLList(MenuType),
-                resolve(parent, args){ 
-                   return Menu.findOne({id: parent.menuId})
-            }
-        },
-        price: { type: GraphQLFloat }, 
-    })
-});
 
 const MenuType = new GraphQLObjectType({
     name:'Menu',
     fields: () => ({
-        id: { type: GraphQLInt },
+        id: { type: GraphQLID },
         products:{ type: new GraphQLList(ProductType),
                 resolve(parent, args){ 
                    return Menu.findOne({id: parent.productId})
@@ -46,22 +30,10 @@ const MenuType = new GraphQLObjectType({
     })
 })
 
-const MenuInputType = new GraphQLInputObjectType({
-    name:'MenuInput',
-    fields: () => ({
-        id: { type: GraphQLInt },
-        products:{ type: new GraphQLList(ProductInputType)},
-        name: { type: GraphQLString },
-        description: { type: GraphQLString },
-        price: { type: GraphQLString },
-    })
-})
-
-
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        id: { type: GraphQLInt },
+        id: { type: GraphQLID },
         username: { type: GraphQLString },
         password: { type: GraphQLString },
     })
@@ -70,7 +42,7 @@ const UserType = new GraphQLObjectType({
 const ProductType = new GraphQLObjectType({
     name: 'Product',
     fields: () => ({
-        id: { type: GraphQLInt },
+        id: { type: GraphQLID },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         expiringDate: { type: GraphQLString }
@@ -80,6 +52,7 @@ const ProductType = new GraphQLObjectType({
 const ProductInputType = new GraphQLInputObjectType({
     name: 'ProductInput',
     fields: () => ({
+        id: { type: GraphQLID },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat }, 
         expiringDate: { type: GraphQLString }
@@ -89,26 +62,17 @@ const ProductInputType = new GraphQLInputObjectType({
 const TicketType = new GraphQLObjectType({
     name: 'Ticket',
     fields: ()=>({
-        id: { type: GraphQLInt},
+        id: { type: GraphQLID},
         author: { type: GraphQLString },
         date: { type: GraphQLString },
         type: { type: GraphQLString },
-        data: { type: GraphQLList(ProductType) }
+        data: { type: GraphQLList(ProductType), 
+             resolve(parentValue){   
+                return Ticket.findTicketData(parentValue.id);
+            }
+        }
     })
 })
-
-const OrderType = new GraphQLObjectType({
-    name: 'Order',
-    fields: () => ({
-        id: { type: GraphQLInt },
-        products: { type: new GraphQLList(ProductType)/* , 
-                    resolve(parent, args){
-                        return Product.find({id: parent.productId})
-                    } */},
-        total: { type: GraphQLFloat },
-    })
-});
-
 
 const Mutation = new GraphQLObjectType({
     name:'Mutation',
@@ -116,14 +80,12 @@ const Mutation = new GraphQLObjectType({
         addProduct:{
             type: ProductType,
             args: {
-                id: { type: GraphQLInt},
                 description: { type: GraphQLString },
                 price: { type: GraphQLFloat },
                 expiringDate: { type: GraphQLString }
             },
             resolve(parent, args){
                 let product = new Product({
-                    id: args.id,
                     description: args.description,
                     price: args.price,
                     expiringDate: args.expiringDate
@@ -134,7 +96,6 @@ const Mutation = new GraphQLObjectType({
         addTicket:{
            type:  TicketType,
            args: {
-                id: { type: GraphQLInt},
                 author: { type: GraphQLString },
                 date: { type: GraphQLString },
                 type: { type: GraphQLString },
@@ -142,27 +103,26 @@ const Mutation = new GraphQLObjectType({
            },
            resolve(parent, args){
                let ticket = new Ticket({
-                id: args.id,
-                author: args.author,
-                type: args.type,
-                date: args.date,
-                data: args.data
-               });
-               return ticket.save();
+                    author: args.author,
+                    type: args.type,
+                    date: args.date,
+                    data: args.data
+                });
+                return ticket.save();
            }
         },
         addMenu:{
             type: MenuType,
             args:{
-                id: { type: GraphQLInt},
                 name: { type: GraphQLString },
+                description: { type: GraphQLString },
                 products: { type: GraphQLList(ProductInputType) },
                 price: { type: GraphQLFloat }
             }, 
             resolve(parent, args){
                 let menu = new Menu({
-                    id: args.id,
                     name: args.name,
+                    description: args.description,
                     products: args.products,
                     price: args.price
                 });
@@ -178,10 +138,10 @@ const RootQuery = new GraphQLObjectType({
         product:{
             type: ProductType,
             args:{ 
-                id: { type: GraphQLInt }
+                id: { type: GraphQLID }
                 },
             resolve(parent,args){
-                return Product.findOne({id: args.id})
+                return Product.finById(id)
                 }
         },
         products:{
@@ -191,9 +151,9 @@ const RootQuery = new GraphQLObjectType({
                 }
         },
         tickets:{
-            type: TicketType,
+            type:  GraphQLList(TicketType),
             resolve(parent,args){
-                return Product.find({});
+                return Ticket.find({});
             }
         }
     }
