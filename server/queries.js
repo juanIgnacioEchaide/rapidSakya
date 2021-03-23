@@ -14,10 +14,14 @@ export const PROMOS = gql`
  export const MENUS = gql`
   query getMenus{
     menues{
-      id
       price
       description
       name
+      products{
+        price
+        description
+        expiringDate
+      }
     }
   }
   `;

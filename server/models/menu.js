@@ -3,10 +3,9 @@ const Schema = mongoose.Schema;
 const Product = require('./product');
 
 const menuSchema = new Schema({
-    id: Number,
     name: String, 
     description: String, 
-    products: [{ type: Schema.Types.ObjectId, ref: 'product' }] ,
+    products:  [{ description: String,  price: Number, expiringDate: Date }],
     price: Number, 
 })
 

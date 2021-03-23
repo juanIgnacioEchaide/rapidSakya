@@ -3,6 +3,7 @@ const _ = require('lodash');
 const Menu = require('../models/menu');
 const Product = require('../models/product'); 
 const Ticket = require('../models/ticket'); 
+const Promo = require('../models/promo'); 
 
 const { 
     GraphQLObjectType, 
@@ -19,11 +20,7 @@ const MenuType = new GraphQLObjectType({
     name:'Menu',
     fields: () => ({
         id: { type: GraphQLID },
-        products:{ type: new GraphQLList(ProductType),
-                resolve(parent, args){ 
-                   return Menu.findOne({id: parent.productId})
-            }
-        },
+        products:{ type: new GraphQLList(ProductType) },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
         price: { type: GraphQLString },
@@ -74,6 +71,17 @@ const TicketType = new GraphQLObjectType({
     })
 })
 
+const PromoType = new GraphQLObjectType({
+    name: 'Promo',
+    fields: ()=>({  
+        id: { type: GraphQLID},
+        name: { type: GraphQLString },
+        menues: { type: GraphQLList(MenuType)},
+        description: { type: GraphQLString },
+        price: { type: GraphQLFloat } 
+    })
+})
+
 const Mutation = new GraphQLObjectType({
     name:'Mutation',
     fields: {
@@ -99,7 +107,7 @@ const Mutation = new GraphQLObjectType({
                 author: { type: GraphQLString },
                 date: { type: GraphQLString },
                 type: { type: GraphQLString },
-                data: { type: GraphQLList(ProductInputType) }
+    /*             data: { type: Objec } */
            },
            resolve(parent, args){
                let ticket = new Ticket({
@@ -154,6 +162,18 @@ const RootQuery = new GraphQLObjectType({
             type:  GraphQLList(TicketType),
             resolve(parent,args){
                 return Ticket.find({});
+            }
+        },
+        menues:{
+            type: GraphQLList(MenuType),
+            resolve(parent, args){
+                return Menu.find({});
+            }
+        },
+        promos:{
+            type: GraphQLList(PromoType),
+            resolve(parent, args){
+                return Promo.find({});
             }
         }
     }

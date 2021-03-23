@@ -7,7 +7,7 @@ const ticketSchema = new Schema({
     author: String,
     type: String,
     data: { 
-        type: Object
+        type: Schema.Types.Mixed
     },
 })
 

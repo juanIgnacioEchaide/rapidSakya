@@ -4,7 +4,11 @@ const Schema = mongoose.Schema;
 const promoSchema = new Schema({
     id: Number,
     name: String, 
-    menues: [Schema.Types.ObjectId],
+    menues: [{ id: Number,
+                name: String, 
+                description: String, 
+                products:  [{ description: String,  price: Number, expiringDate: Date }],
+                price: Number }],
     description: String, 
     price: Number, 
 })
