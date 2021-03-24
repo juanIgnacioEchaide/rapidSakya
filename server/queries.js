@@ -17,11 +17,6 @@ export const PROMOS = gql`
       price
       description
       name
-      products{
-        price
-        description
-        expiringDate
-      }
     }
   }
   `;

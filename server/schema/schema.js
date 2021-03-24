@@ -4,6 +4,7 @@ const Menu = require('../models/menu');
 const Product = require('../models/product'); 
 const Ticket = require('../models/ticket'); 
 const Promo = require('../models/promo'); 
+const { Mongoose } = require('mongoose');
 
 const { 
     GraphQLObjectType, 
@@ -12,15 +13,26 @@ const {
     GraphQLID, 
     GraphQLInputObjectType,
     GraphQLList, 
+    GraphQLInt,
     GraphQLNonNull
 } = graphql;
-
 
 const MenuType = new GraphQLObjectType({
     name:'Menu',
     fields: () => ({
         id: { type: GraphQLID },
         products:{ type: new GraphQLList(ProductType) },
+        name: { type: GraphQLString },
+        description: { type: GraphQLString },
+        price: { type: GraphQLString },
+    })
+})
+
+const MenuInputType = new GraphQLInputObjectType({
+    name:'MenuInput',
+    fields: () => ({
+        id: { type: GraphQLID },
+        products:{ type: new GraphQLList(ProductInputType) },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
         price: { type: GraphQLString },
@@ -63,11 +75,7 @@ const TicketType = new GraphQLObjectType({
         author: { type: GraphQLString },
         date: { type: GraphQLString },
         type: { type: GraphQLString },
-        data: { type: GraphQLList(ProductType), 
-             resolve(parentValue){   
-                return Ticket.findTicketData(parentValue.id);
-            }
-        }
+        data: { type: GraphQLString }
     })
 })
 
@@ -78,7 +86,9 @@ const PromoType = new GraphQLObjectType({
         name: { type: GraphQLString },
         menues: { type: GraphQLList(MenuType)},
         description: { type: GraphQLString },
-        price: { type: GraphQLFloat } 
+        price: { type: GraphQLFloat },
+        discount: { type: GraphQLInt },
+        expirationDate: { type: GraphQLString },
     })
 })
 
@@ -104,10 +114,10 @@ const Mutation = new GraphQLObjectType({
         addTicket:{
            type:  TicketType,
            args: {
-                author: { type: GraphQLString },
+                customer: { type: GraphQLString },
                 date: { type: GraphQLString },
-                type: { type: GraphQLString },
-    /*             data: { type: Objec } */
+                paymentType: { type: GraphQLString },
+                data: { type: GraphQLList(ProductInputType) },
            },
            resolve(parent, args){
                let ticket = new Ticket({
@@ -136,6 +146,27 @@ const Mutation = new GraphQLObjectType({
                 });
                 return menu.save();
             }
+        },
+        addPromo: {
+            type: PromoType,
+            args: {
+                name: { type: GraphQLString },
+                menues: { type: GraphQLList(MenuInputType)},
+                description: { type: GraphQLString },
+                discount: { type: GraphQLInt },
+                expirationDate: { type: GraphQLString },
+            }, 
+            resolve(parent, args){
+                let menu = new Menu({
+                    name: args.name,
+                    description: args.description,
+                    products: args.products,
+                    price: args.price,
+                    discount: args.discount,
+                    expirationDate: args.expirationDate,
+                });
+                return menu.save();
+            }
         }
     }
 })
@@ -150,6 +181,33 @@ const RootQuery = new GraphQLObjectType({
                 },
             resolve(parent,args){
                 return Product.finById(id)
+                }
+        },
+        menu:{
+            type: MenuType,
+            args:{ 
+                id: { type: GraphQLID }
+                },
+            resolve(parent,args){
+                return Menu.finById(id)
+                }
+        },
+        promo:{
+            type: PromoType,
+            args:{ 
+                id: { type: GraphQLID }
+                },
+            resolve(parent,args){
+                return Promo.finById(id)
+                }
+        },
+        promo:{
+            type: PromoType,
+            args:{ 
+                id: { type: GraphQLID }
+                },
+            resolve(parent,args){
+                return Promo.finById(id)
                 }
         },
         products:{
